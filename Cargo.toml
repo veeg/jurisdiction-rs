@@ -3,6 +3,20 @@ name = "jurisdiction"
 version = "0.1.0"
 authors = ["Vegard Sandengen <vegard@orcalabs.no>"]
 edition = "2018"
+license = "MIT"
+description = """
+A lightweight API-friendly abstraction for the jurisdiction in the world,
+and their accompanying static information pertaining to that jurisdiction.
+Information available includes:
+* ISO 3166 country codes
+* UN M49 Region classifications
+"""
+homepage = "https::/www.orcalabs.no"
+repository = "https://gitlab.com/orcalabs.public/jursidiction-rs"
+keywords = ["jurisdiction", "country", "ISO 3166"]
+categories = ["localization", "encoding"]
+readme = "README.md"
+documentation = "https://docs.rs/jurisdiction"
 
 [features]
 default = ["full"]
