@@ -11,7 +11,7 @@ Information available includes:
 * ISO 3166 country codes
 * UN M49 Region classifications
 """
-homepage = "https::/www.orcalabs.no"
+homepage = "https://www.orcalabs.no"
 repository = "https://gitlab.com/orcalabs.public/jursidiction-rs"
 keywords = ["jurisdiction", "country", "ISO-3166"]
 categories = ["localization", "encoding"]
