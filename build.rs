@@ -39,7 +39,7 @@ struct CountryRegionDefinition {
     intermediate_region_code: String,
 }
 
-fn generate_alpha(definitions: &Vec<CountryRegionDefinition>) -> TokenStream {
+fn generate_alpha(definitions: &[CountryRegionDefinition]) -> TokenStream {
     let alpha2 = generate_alpha2(&definitions);
     let alpha3 = generate_alpha3(&definitions);
 
@@ -52,7 +52,7 @@ fn generate_alpha(definitions: &Vec<CountryRegionDefinition>) -> TokenStream {
     )
 }
 
-fn generate_alpha2(definitions: &Vec<CountryRegionDefinition>) -> TokenStream {
+fn generate_alpha2(definitions: &[CountryRegionDefinition]) -> TokenStream {
     // Generate enum body
     let mut enum_body = TokenStream::new();
     for def in definitions.iter() {
@@ -102,7 +102,7 @@ fn generate_alpha2(definitions: &Vec<CountryRegionDefinition>) -> TokenStream {
     )
 }
 
-fn generate_alpha3(definitions: &Vec<CountryRegionDefinition>) -> TokenStream {
+fn generate_alpha3(definitions: &[CountryRegionDefinition]) -> TokenStream {
     // Generate enum body
     let mut enum_body = TokenStream::new();
     for def in definitions.iter() {
@@ -152,7 +152,7 @@ fn generate_alpha3(definitions: &Vec<CountryRegionDefinition>) -> TokenStream {
     )
 }
 
-fn generate_region(definitions: &Vec<CountryRegionDefinition>) -> TokenStream {
+fn generate_region(definitions: &[CountryRegionDefinition]) -> TokenStream {
     // Gather all country codes for each region
     let mut regions: HashMap<&Region, Vec<u16>> = HashMap::new();
     let mut subs: HashMap<&SubRegion, Vec<u16>> = HashMap::new();
@@ -229,6 +229,7 @@ fn generate_region(definitions: &Vec<CountryRegionDefinition>) -> TokenStream {
         use crate::Jurisdiction;
 
         impl Region {
+            #[allow(clippy::trivially_copy_pass_by_ref)]
             pub(crate) fn jurisdictions(&self) -> Vec<Jurisdiction> {
                 match *self {
                     #region_body
@@ -237,6 +238,7 @@ fn generate_region(definitions: &Vec<CountryRegionDefinition>) -> TokenStream {
         }
 
         impl SubRegion {
+            #[allow(clippy::trivially_copy_pass_by_ref)]
             pub(crate) fn jurisdictions(&self) -> Vec<Jurisdiction> {
                 match *self {
                     #sub_body
@@ -245,6 +247,7 @@ fn generate_region(definitions: &Vec<CountryRegionDefinition>) -> TokenStream {
         }
 
         impl IntermediateRegion {
+            #[allow(clippy::trivially_copy_pass_by_ref)]
             pub(crate) fn jurisdictions(&self) -> Vec<Jurisdiction> {
                 match *self {
                     #intermediate_body
@@ -254,7 +257,7 @@ fn generate_region(definitions: &Vec<CountryRegionDefinition>) -> TokenStream {
     )
 }
 
-fn generate_definition(definitions: &Vec<CountryRegionDefinition>) -> TokenStream {
+fn generate_definition(definitions: &[CountryRegionDefinition]) -> TokenStream {
     let mut tokendefs = TokenStream::new();
     for def in definitions.iter() {
         let name = &def.name;

@@ -33,22 +33,20 @@
 //!     }
 //! }
 //!
-//! fn main() {
-//!     let jurisdiction = supported_jurisdiction("NO").expect("unsupported");
+//! let jurisdiction = supported_jurisdiction("NO").expect("unsupported");
 //!
-//!     assert_eq!(jurisdiction, Alpha2::NO);
-//!     assert_eq!(jurisdiction.alpha2(), Alpha2::NO);
-//!     assert_eq!(jurisdiction.alpha2().to_string(), "NO");
+//! assert_eq!(jurisdiction, Alpha2::NO);
+//! assert_eq!(jurisdiction.alpha2(), Alpha2::NO);
+//! assert_eq!(jurisdiction.alpha2().to_string(), "NO");
 //!
-//!     assert_eq!(jurisdiction, Alpha3::NOR);
-//!     assert_eq!(jurisdiction.alpha3(), Alpha3::NOR);
-//!     assert_eq!(jurisdiction.alpha3().to_string(), "NOR");
+//! assert_eq!(jurisdiction, Alpha3::NOR);
+//! assert_eq!(jurisdiction.alpha3(), Alpha3::NOR);
+//! assert_eq!(jurisdiction.alpha3().to_string(), "NOR");
 //!
-//!     assert_eq!(jurisdiction.country_code(), 578);
+//! assert_eq!(jurisdiction.country_code(), 578);
 //!
-//!     assert_eq!(jurisdiction.region(), Region::Europe);
-//!     assert_eq!(jurisdiction.sub_region(), SubRegion::NorthernEurope);
-//! }
+//! assert_eq!(jurisdiction.region(), Region::Europe);
+//! assert_eq!(jurisdiction.sub_region(), SubRegion::NorthernEurope);
 //! ```
 //!
 //! Construct `Jurisdiction` from string:

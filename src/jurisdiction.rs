@@ -12,14 +12,14 @@ use std::str::FromStr;
 ///
 /// The size of this structure is minimized such that passing it around will be limited
 /// overhead, with implemented methods performing lookup in static table instead.
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub struct Jurisdiction {
     definition: &'static Definition,
 }
 
 impl std::cmp::PartialEq<Jurisdiction> for Jurisdiction {
     fn eq(&self, other: &Jurisdiction) -> bool {
-        &self.definition.country_code == &other.definition.country_code
+        self.definition.country_code == other.definition.country_code
     }
 }
 
