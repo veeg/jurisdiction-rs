@@ -19,7 +19,7 @@ pub struct Jurisdiction {
 
 impl std::cmp::PartialEq<Jurisdiction> for Jurisdiction {
     fn eq(&self, other: &Jurisdiction) -> bool {
-        &self.definition.country_code == &other.definition.country_code
+        self.definition.country_code == other.definition.country_code
     }
 }
 
