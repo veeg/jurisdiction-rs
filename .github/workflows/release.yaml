@@ -1,0 +1,96 @@
+##
+## This workflow currently assumes single crate release, with only single workspace member.
+##
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      level:
+        type: choice
+        default: 'patch'
+        options:
+          - major
+          - minor
+          - patch
+  # We must run job 'release-verify' in context of the release branch
+  pull_request:
+    branches:
+      - 'releases/**'
+
+jobs:
+
+  ## We only open a PR when the manual workflow dispatch job has been triggered.
+  ##
+  ## This job is solely to trigger an open PR with appropriate changes and metadata
+  ## placed in the PR to _potentially_ run a full release, once the PR is merged.
+  open-pr:
+    if: ${{ github.event_name == 'workflow_dispatch' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install jq
+        shell: bash
+        run: apt-get install jq
+      - name: Install rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+      - name: Install version-related metadata tools
+        uses: taiki-e/install-action@v1
+        with:
+          tool: cargo-edit, cargo-metadata
+
+      - name: Detect current target version
+          shell: bash
+          run: >
+            echo "OLD_VERSION=$(
+              cargo metdata --format-version 1 --no-deps | jq '.packages[0].version' | cut -d \" -f 2
+            )" >> $GITHUB_ENV
+
+      - name: Upgrade crate version
+        shell: bash
+        run: cargo set-version --bump ${{ github.event.input.level }}
+
+      - name: Detect new target version
+          shell: bash
+          run: >
+            echo "NEW_VERSION=$(
+              cargo metdata --format-version 1 --no-deps | jq '.packages[0].version' | cut -d \" -f 2
+            )" >> $GITHUB_ENV
+
+      - name: Create PR
+        uses: peter-evans/create-pull-request@v4
+        with:
+          commit-message: chore: release ${{ github.event.inputs.level }} version bump
+          branch: releases/${{ github.event.inputs.level }} # TODO: get target release version
+          delete-branch: true
+          title: Release ${{ github.event.input.level }} version upgrade to TODO # TODO: get target release version
+          labels:
+            - "release-action:old:${{ env.OLD_VERSION }}"
+            - "release-action:new:${{ env.NEW_VERSION }}"
+
+  ## We only run the release-verification check within the context of the open release PR.
+  ##
+  ## This job is solely to verify that we are able to sufficiently release the requested version
+  ## in the PR. This is the place for all last-minute compatibility checks for the new version.
+  release-verify:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' && github.event.action != 'closed'
+    steps:
+      - name: I ran
+        shell: bash
+        run: echo "We are running only within the release PR: Do we even have env?? doubt it: ${{ github.env.OLD_VERSION }}"
+      # TODO:
+      # - detect target branch version (through tags?)
+      # - detect new version (through tags?)
+      # - run appropriate checks
+      #   - cargo-semver-check
+
+  ## Tag the new release version in git
+  release-tag:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
+    steps:
+      - uses: actions/checkout@v3
+      - name: Tag new release version
+        shell: bash
+        run: git tag v${{ github.env.NEW_VERSION }} && git push origin v${{ github.env.NEW_VERSION }}
