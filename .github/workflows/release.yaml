@@ -40,22 +40,22 @@ jobs:
           tool: cargo-edit, cargo-metadata
 
       - name: Detect current target version
-          shell: bash
-          run: >
-            echo "OLD_VERSION=$(
-              cargo metdata --format-version 1 --no-deps | jq '.packages[0].version' | cut -d \" -f 2
-            )" >> $GITHUB_ENV
+        shell: bash
+        run: >
+          echo "OLD_VERSION=$(
+            cargo metdata --format-version 1 --no-deps | jq '.packages[0].version' | cut -d \" -f 2
+          )" >> $GITHUB_ENV
 
       - name: Upgrade crate version
         shell: bash
         run: cargo set-version --bump ${{ github.event.input.level }}
 
       - name: Detect new target version
-          shell: bash
-          run: >
-            echo "NEW_VERSION=$(
-              cargo metdata --format-version 1 --no-deps | jq '.packages[0].version' | cut -d \" -f 2
-            )" >> $GITHUB_ENV
+        shell: bash
+        run: >
+          echo "NEW_VERSION=$(
+            cargo metdata --format-version 1 --no-deps | jq '.packages[0].version' | cut -d \" -f 2
+          )" >> $GITHUB_ENV
 
       - name: Create PR
         uses: peter-evans/create-pull-request@v4
