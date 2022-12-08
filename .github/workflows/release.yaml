@@ -64,9 +64,9 @@ jobs:
           branch: releases/v${{ github.env.NEW_VERSION}}
           delete-branch: true
           title: Release ${{ github.event.input.level }} version upgrade from ${{ github,env.OLD_VERSION}} to ${{ github.env.NEW_VERSION }}
-          labels:
-            - "release-action:old:${{ env.OLD_VERSION }}"
-            - "release-action:new:${{ env.NEW_VERSION }}"
+          labels: |
+            release-action:old:${{ env.OLD_VERSION }}
+            release-action:new:${{ env.NEW_VERSION }}
 
   ## We only run the release-verification check within the context of the open release PR.
   ##
