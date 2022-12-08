@@ -17,7 +17,7 @@ on:
   pull_request:
     types: [opened, reopened, synchronize, closed]
     branches:
-      - 'releases/**'
+      - master
 
 jobs:
 
@@ -62,7 +62,7 @@ jobs:
         uses: peter-evans/create-pull-request@v4
         with:
           commit-message: "chore: release ${{ github.event.inputs.level }} version bump"
-          branch: releases/v${{ github.env.NEW_VERSION}}
+          branch: releases/v${{ env.NEW_VERSION}}
           delete-branch: true
           title: Release ${{ github.event.inputs.level }} version upgrade from ${{ env.OLD_VERSION}} to ${{ env.NEW_VERSION }}
           labels: |
@@ -75,7 +75,7 @@ jobs:
   ## in the PR. This is the place for all last-minute compatibility checks for the new version.
   release-verify:
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request' && github.event.action != 'closed'
+    if: startsWith(github.ref, 'releases/v') && github.event_name == 'pull_request' && github.event.action != 'closed'
     steps:
       - name: I ran
         shell: bash
@@ -91,7 +91,7 @@ jobs:
   ## Tag the new release version in git
   release-tag:
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
+    if: startsWith(github.ref, 'releases/v1') && github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
     steps:
       - uses: actions/checkout@v3
       - name: Tag new release version
