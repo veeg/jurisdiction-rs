@@ -1,6 +1,6 @@
 [package]
 name = "jurisdiction"
-version = "0.1.2"
+version = "0.1.3"
 authors = ["Vegard Sandengen <vegard@orcalabs.no>"]
 edition = "2018"
 license = "MIT"
