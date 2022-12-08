@@ -37,7 +37,7 @@ jobs:
       - name: Install version-related metadata tools
         uses: taiki-e/install-action@v1
         with:
-          tool: cargo-edit,cargo-metadata
+          tool: cargo-edit
 
       - name: Detect current target version
         shell: bash
