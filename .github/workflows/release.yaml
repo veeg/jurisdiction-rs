@@ -43,18 +43,18 @@ jobs:
         shell: bash
         run: >
           echo "OLD_VERSION=$(
-            cargo metdata --format-version 1 --no-deps | jq '.packages[0].version' | cut -d \" -f 2
+            cargo metadata --format-version 1 --no-deps | jq '.packages[0].version' | cut -d \" -f 2
           )" >> $GITHUB_ENV
 
       - name: Upgrade crate version
         shell: bash
-        run: cargo set-version --bump ${{ github.event.input.level }}
+        run: cargo set-version --bump ${{ github.event.inputs.level }}
 
       - name: Detect new target version
         shell: bash
         run: >
           echo "NEW_VERSION=$(
-            cargo metdata --format-version 1 --no-deps | jq '.packages[0].version' | cut -d \" -f 2
+            cargo metadata --format-version 1 --no-deps | jq '.packages[0].version' | cut -d \" -f 2
           )" >> $GITHUB_ENV
 
       - name: Create PR
