@@ -15,6 +15,7 @@ on:
           - patch
   # We must run job 'release-verify' in context of the release branch
   pull_request:
+    types: [opened, reopened, synchronize, closed]
     branches:
       - 'releases/**'
 
@@ -65,8 +66,8 @@ jobs:
           delete-branch: true
           title: Release ${{ github.event.inputs.level }} version upgrade from ${{ env.OLD_VERSION}} to ${{ env.NEW_VERSION }}
           labels: |
-            release-action:old:${{ env.OLD_VERSION }}
-            release-action:new:${{ env.NEW_VERSION }}
+            release-action-old:${{ env.OLD_VERSION }}
+            release-action-new:${{ env.NEW_VERSION }}
 
   ## We only run the release-verification check within the context of the open release PR.
   ##
