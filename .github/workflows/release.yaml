@@ -63,7 +63,7 @@ jobs:
           commit-message: "chore: release ${{ github.event.inputs.level }} version bump"
           branch: releases/v${{ github.env.NEW_VERSION}}
           delete-branch: true
-          title: Release ${{ github.event.input.level }} version upgrade from ${{ github.env.OLD_VERSION}} to ${{ github.env.NEW_VERSION }}
+          title: Release ${{ github.event.inputs.level }} version upgrade from ${{ env.OLD_VERSION}} to ${{ env.NEW_VERSION }}
           labels: |
             release-action:old:${{ env.OLD_VERSION }}
             release-action:new:${{ env.NEW_VERSION }}
@@ -79,11 +79,12 @@ jobs:
       - name: I ran
         shell: bash
         run: >
-          echo "We are running only within the release PR: Do we even have env?? doubt it: ${{ github.env.OLD_VERSION }}"
+          echo "We are running only within the release PR: Do we even have env?? doubt it: ${{ env.OLD_VERSION }}"
       # TODO:
       # - detect target branch version (through tags?)
       # - detect new version (through tags?)
       # - run appropriate checks
+      #   NOTE: For this to have any value, we need to check against an earlier actually released version.
       #   - cargo-semver-check
 
   ## Tag the new release version in git
@@ -94,4 +95,4 @@ jobs:
       - uses: actions/checkout@v3
       - name: Tag new release version
         shell: bash
-        run: git tag v${{ github.env.NEW_VERSION }} && git push origin v${{ github.env.NEW_VERSION }}
+        run: git tag v${{ env.NEW_VERSION }} && git push origin v${{ env.NEW_VERSION }}
