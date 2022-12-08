@@ -78,7 +78,8 @@ jobs:
     steps:
       - name: I ran
         shell: bash
-        run: echo "We are running only within the release PR: Do we even have env?? doubt it: ${{ github.env.OLD_VERSION }}"
+        run: >
+          echo "We are running only within the release PR: Do we even have env?? doubt it: ${{ github.env.OLD_VERSION }}"
       # TODO:
       # - detect target branch version (through tags?)
       # - detect new version (through tags?)
